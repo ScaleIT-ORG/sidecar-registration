@@ -1,8 +1,8 @@
 # sidecar-script
 just run "docker-compose up" to start the script. 
 
-## explanation
-This is where the Magic happens
+- explanation
+	This is where the Magic happens
 
 	At first it checks if ETCD is up and Running or waits till it gets a healthy signal from the ETCD Storage 
 
