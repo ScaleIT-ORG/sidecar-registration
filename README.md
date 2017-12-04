@@ -1,7 +1,18 @@
 # sidecar-script
-just run "docker-compose up" to start the script. 
+1) Clone this repository to your main application
+2) Configure config.env
+3.1) run "docker-compose up" to start the script as standalone 
+3.2) or add
+```
+  sidecarregistration:
+    build: ./sidecar-registration/
+    env_file:
+      - ./sidecar-registration/config.env
+``` 
+to your docker-compose file
 
-- explanation
+
+# explanation
 
 	This is where the Magic happens
 

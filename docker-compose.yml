@@ -1,4 +1,6 @@
 version: '2'
 services: 
-    script_runner:
+    sidecar-registration:
         build: .
+        env_file:
+         - config.env
