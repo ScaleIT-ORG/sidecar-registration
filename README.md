@@ -1,7 +1,10 @@
 # sidecar-script
 1) Clone this repository to your main application
+
 2) Configure config.env
+
 3.1) run "docker-compose up" to start the script as standalone 
+
 3.2) or add
 ```
   sidecarregistration:
