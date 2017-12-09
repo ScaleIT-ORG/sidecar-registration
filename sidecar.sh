@@ -11,18 +11,18 @@ APP_ICON=$APP_ICON
 echo "test: $ETCD_IP"
 #check if etcd is up and running
 STR='"health": "false"'
-STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:2379/health")
+STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:49501/health")
 while [[ $STR != *'"health": "true"'* ]]
 do
 	echo "Waiting for etcd ..."
-	STR=$(curl -sb -H "Accept: application/json" "http://$ETD_IP:2379/health")
+	STR=$(curl -sb -H "Accept: application/json" "http://$ETD_IP:49501/health")
 	sleep 1
 done
 
 #Register Application
-curl -L -X PUT http://$ETCD_IP:2379/v2/keys/$APP_NAME/url -d value="$APP_URL"
-curl -L -X PUT http://$ETCD_IP:2379/v2/keys/$APP_NAME/icon -d value="$APP_ICON"
-curl -L -X PUT http://$ETCD_IP:2379/v2/keys/$APP_NAME/desc -d value="$APP_DESCRIPTION"
+curl -L -X PUT http://$ETCD_IP:49501/v2/keys/$APP_NAME/url -d value="$APP_URL"
+curl -L -X PUT http://$ETCD_IP:49501/v2/keys/$APP_NAME/icon -d value="$APP_ICON"
+curl -L -X PUT http://$ETCD_IP:49501/v2/keys/$APP_NAME/desc -d value="$APP_DESCRIPTION"
 
 
 # SIGTERM-handler
@@ -30,7 +30,7 @@ curl -L -X PUT http://$ETCD_IP:2379/v2/keys/$APP_NAME/desc -d value="$APP_DESCRI
 term_handler() {
   echo "[Sidecar] Shutting Down"
 
-  curl -L -X PUT "http://$ETCD_IP:2379/v2/keys/$APP_NAME?recursive=true" -XDELETE
+  curl -L -X PUT "http://$ETCD_IP:49501/v2/keys/$APP_NAME?recursive=true" -XDELETE
 
   exit 143; # 128 + 15 -- SIGTERM
 }
