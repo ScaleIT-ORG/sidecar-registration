@@ -3,9 +3,9 @@
 
 2. Configure config.env
 
-Markup : 3. How to use:
-		1 Run "docker-compose up" to start the script as standalone 
-		2 Or add
+3. How to use:
+	1. Run "docker-compose up" to start the script as standalone 
+	2. Or add
 		
 ```
   sidecarregistration:
