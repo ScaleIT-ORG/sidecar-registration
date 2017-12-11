@@ -39,7 +39,14 @@ do
 done
 ```
 
-Then the application registers its keys
+Then the application registers its keys. For example the following:
+* $APP_URL
+* $APP_ICON
+* $APPHUB_ICON
+* $APP_DESCRIPTION
+* $APP_VISIBLEFORROLE
+* $APP_TYPE
+
 ```bash
 curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/url -d value="$APP_URL"
 curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/App_Icon -d value="$APP_ICON"
