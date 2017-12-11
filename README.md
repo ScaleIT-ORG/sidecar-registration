@@ -3,9 +3,10 @@
 
 2. Configure config.env
 
-3.1 run "docker-compose up" to start the script as standalone 
-
-3.2 or add
+Markup : 3. How to use:
+		1 Run "docker-compose up" to start the script as standalone 
+		2 Or add
+		
 ```
   sidecarregistration:
     build: ./sidecar-registration/
@@ -16,6 +17,8 @@ to your docker-compose file
 
 
 # explanation
+
+[!The process of application's registration](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/App%20-%20Registration.png)
 
 This is where the Magic happens
 
