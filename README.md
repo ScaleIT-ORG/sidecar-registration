@@ -15,6 +15,9 @@
 ``` 
 to your docker-compose file
 
+# architecture
+
+![Registration Sidecar Architecture Concept](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/architecture.png)
 
 # explanation
 
