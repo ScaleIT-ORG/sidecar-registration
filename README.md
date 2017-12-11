@@ -30,11 +30,11 @@ At first it checks if ETCD is up and Running or waits till it gets a healthy sig
 ```bash
 #check if etcd is up and running
 STR='"health": "false"'
-STR=$(curl -sb -H "Accept: application/json" "http://etcd:2379/health")
+STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:$ETCD_PORT/health")
 while [[ $STR != *'"health": "true"'* ]]
 do
         echo "Waiting for etcd ..."
-        STR=$(curl -sb -H "Accept: application/json" "http://etcd:2379/health")
+        STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:$ETCD_PORT/health")
         sleep 1
 done
 ```
@@ -52,7 +52,7 @@ curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/appType -d value="$A
 
 Additionaly there is a SIGTERM handler which catches the ctr+c command and unregisters the application with:
 ```bash
-curl -L -X PUT 'http://etcd:2379/v2/keys/Example1?recursive=true' -XDELETE
+curl -L -X PUT 'http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME?recursive=true' -XDELETE
 ```
 
 The script also starts the main Application and executes a endless loop to catch the ctr+c Signal while the container is up and running
