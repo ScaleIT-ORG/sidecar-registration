@@ -18,7 +18,7 @@ to your docker-compose file
 
 # explanation
 
-[!The process of application's registration](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/App%20-%20Registration.png)
+![The process of application's registration](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/App%20-%20Registration.png)
 
 This is where the Magic happens
 
