@@ -41,10 +41,13 @@ done
 
 Then the application registers its keys
 ```bash
-#Register Application
-curl -L -X PUT http://etcd:2379/v2/keys/Example1/url -d value="localhost:3000"
-curl -L -X PUT http://etcd:2379/v2/keys/Example1/icon -d value="/icon/favicon.png"
-curl -L -X PUT http://etcd:2379/v2/keys/Example1/desc -d value="Description here  ...."
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/url -d value="$APP_URL"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/App_Icon -d value="$APP_ICON"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/AppHub_Icon -d value="$APPHUB_ICON"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/description -d value="$APP_DESCRIPTION"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/lifecycleStatus -d value="Online"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/visibleForRole -d value="$APP_VISIBLEFORROLE"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/appType -d value="$APP_TYPE"
 ```
 
 Additionaly there is a SIGTERM handler which catches the ctr+c command and unregisters the application with:
@@ -54,9 +57,7 @@ curl -L -X PUT 'http://etcd:2379/v2/keys/Example1?recursive=true' -XDELETE
 
 The script also starts the main Application and executes a endless loop to catch the ctr+c Signal while the container is up and running
 ```bash
-#run application
-node example.js &
-	# wait forever
+# wait forever
 while true
 do
   tail -f /dev/null & wait ${!}
