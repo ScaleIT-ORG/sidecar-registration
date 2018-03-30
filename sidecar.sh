@@ -19,21 +19,21 @@ do
 done
 
 #Register Application
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/id -d value="$APP_ID"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/name -d value="$APP_NAME"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/title -d value="$APP_TITLE"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/shortDescription -d value="$APP_SHORTDESCRIPTION"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/description -d value="$APP_DESCRIPTION"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/category -d value="$APP_CATEGORY"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/status -d value="$APP_STATUS"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/apiEntrypoint -d value="$APP_APIENTRYPOINT"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/apiSpecificationUrl -d value="$APP_APISPECIFICATION"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/iconUrl -d value="$APP_ICONURL"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/adminUrl -d value="$APPHUB_ADMINURL"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/userUrl -d value="$APP_USERURL"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/createdAt -d value="$APP_CREATEDAT"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/updatedAt -d value="$APP_UPDATEDAT"
-curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/appType -d value="$APP_TYPE"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/id -d value="$APP_ID"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/name -d value="$APP_NAME"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/title -d value="$APP_TITLE"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/shortDescription -d value="$APP_SHORTDESCRIPTION"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/description -d value="$APP_DESCRIPTION"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/category -d value="$APP_CATEGORY"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/status -d value="$APP_STATUS"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/apiEntrypoint -d value="$APP_APIENTRYPOINT"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/apiSpecificationUrl -d value="$APP_APISPECIFICATION"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/iconUrl -d value="$APP_ICONURL"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/adminUrl -d value="$APPHUB_ADMINURL"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/userUrl -d value="$APP_USERURL"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/createdAt -d value="$APP_CREATEDAT"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/updatedAt -d value="$APP_UPDATEDAT"
+curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/appType -d value="$APP_TYPE"
 
 # SIGTERM-handler
 # Unregister this application on ctr+c
@@ -44,7 +44,7 @@ term_handler() {
   #curl -L -X PUT "http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME?recursive=true" -XDELETE
 
   #Set Status Offline
-  curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME/status -d value="Offline"
+  curl -L -X PUT http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_ID/status -d value="Offline"
 
   exit 143; # 128 + 15 -- SIGTERM
 }
