@@ -22,10 +22,7 @@ APP_REGISTRY_URL="http://$ETCD_IP:$ETCD_PORT/v2/keys/apps/$APP_ID"
 
 echo "PUTting App Information on $APP_REGISTRY_URL"
 
-# Register Application
-# See App Swagger file for details
-# https://github.com/ScaleIT-Org/etcd-api-wrapper/blob/master/server/api/definitions/schemas/App.yaml
-
+#Register Application
 curl -L -X PUT "$APP_REGISTRY_URL/id" -d value="$APP_ID"
 curl -L -X PUT "$APP_REGISTRY_URL/name" -d value="$APP_NAME"
 curl -L -X PUT "$APP_REGISTRY_URL/title" -d value="$APP_TITLE"
@@ -33,18 +30,12 @@ curl -L -X PUT "$APP_REGISTRY_URL/shortDescription" -d value="$APP_SHORTDESCRIPT
 curl -L -X PUT "$APP_REGISTRY_URL/description" -d value="$APP_DESCRIPTION"
 curl -L -X PUT "$APP_REGISTRY_URL/category" -d value="$APP_CATEGORY"
 curl -L -X PUT "$APP_REGISTRY_URL/status" -d value="$APP_STATUS"
-curl -L -X PUT "$APP_REGISTRY_URL/apiEntrypoint" -d value="$APP_API_ENTRYPOINT"
+curl -L -X PUT "$APP_REGISTRY_URL/apiEntrypoint" -d value="$APP_APIENTRYPOINT"
+curl -L -X PUT "$APP_REGISTRY_URL/apiSpecificationUrl" -d value="$APP_APISPECIFICATION"
 curl -L -X PUT "$APP_REGISTRY_URL/iconUrl" -d value="$APP_ICONURL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminUrl" -d value="$APP_ADMIN_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminConfigUrl" -d value="$APP_ADMIN_CONFIG_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminDocUrl" -d value="$APP_ADMIN_DOC_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminLogUrl" -d value="$APP_ADMIN_LOG_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminStatusUrl" -d value="$APP_ADMIN_STATUS_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/userDocUrl" -d value="$APP_USER_DOC_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/userStatusUrl" -d value="$APP_USER_STATUS_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/devDocUrl" -d value="$APP_DEV_DOC_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/devSwaggerUrl" -d value="$APP_DEV_SWAGGER_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/userUrl" -d value="$APP_USER_URL"
+curl -L -X PUT "$APP_REGISTRY_URL/adminUrl" -d value="$APPHUB_ADMINURL"
+curl -L -X PUT "$APP_REGISTRY_URL/userUrl" -d value="$APP_USERURL"
+curl -L -X PUT "$APP_REGISTRY_URL/createdAt" -d value="$APP_CREATEDAT"
 curl -L -X PUT "$APP_REGISTRY_URL/updatedAt" -d value="$APP_UPDATEDAT"
 curl -L -X PUT "$APP_REGISTRY_URL/appType" -d value="$APP_TYPE"
 
