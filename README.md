@@ -4,6 +4,38 @@ example docker-compose for app rancher deployment:
 
 	examples/docker-compose.yml
 
+These are the values you should fill into the docker-compose for Rancher - works over the rancher questions mechanism (similar to .env in docker-compose):
+
+	# entries that are empty here are optional
+	ETCD_IP=10.28.230.25
+	ETCD_PORT=49501
+	
+	APP_ID=myID123
+	APP_NAME=App1
+	APP_TITLE=MyTitle
+	APP_SHORTDESCRIPTION=Your Description here
+	APP_DESCRIPTION=More Information
+	APP_CATEGORY=productivity
+	APP_STATUS=online
+	APP_API_ENTRYPOINT=https=//<ip>=<port>/api/v1
+	APP_ICON_URL=https://<ip>:<port>/user/icon.svg
+	
+	APP_ADMIN_URL=https://<ip>:<port>/admin
+	APP_ADMIN_CONFIG_URL=
+	APP_ADMIN_DOC_URL=
+	APP_ADMIN_LOG_URL=
+	APP_ADMIN_STATUS_URL=
+	
+	APP_USER_URL=https://<ip>:<port>/user
+	APP_USER_DOC_URL=
+	APP_USER_STATUS_URL=
+	APP_DEV_DOC_URL=
+	APP_DEV_SWAGGER_URL=
+	APP_USER_URL=
+	
+	APP_UPDATEDAT=2018-03-30T12:32:16.581Z
+	APP_TYPE=domainApp
+
 # sidecar-script
 1. Clone this repository to your main application
 
