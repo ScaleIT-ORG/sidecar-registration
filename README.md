@@ -1,3 +1,9 @@
+Work in progress
+
+example docker-compose for app rancher deployment:
+
+	examples/docker-compose.yml
+
 # sidecar-script
 1. Clone this repository to your main application
 

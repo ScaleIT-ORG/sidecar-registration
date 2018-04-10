@@ -1,54 +1,89 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "Sidecar running"
 echo "pid is $$"
 
-ETCD_PORT=$ETCD_PORT
-ETCD_IP=$ETCD_IP
-echo $ETCD_IP
+APP_REGISTRY_ADDRESS=$APP_REGISTRY_ADDRESS
+echo $APP_REGISTRY_ADDRESS
 
-#check if etcd is up and running
+#check if YP is up and running
 STR='"health": "false"'
-STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:$ETCD_PORT/health")
+STR=$(curl -k -s -H "Accept: application/json" "$APP_REGISTRY_ADDRESS/api/v1/health")
 while [[ $STR != *'"health":"true"'* ]]
 do
-	echo "Waiting for etcd ..."
-	STR=$(curl -sb -H "Accept: application/json" "http://$ETD_IP:$ETCD_PORT/health")
-  echo $STR
-	sleep 1
+	echo "Waiting for YP ..."
+	STR=$(curl -k -s -H "Accept: application/json" "$APP_REGISTRY_ADDRESS/api/v1/health")
+	sleep 10
 done
 
-APP_REGISTRY_URL="http://$ETCD_IP:$ETCD_PORT/v2/keys/apps/$APP_ID"
+echo "response of GET /api/v1/health: " $STR
 
-echo "PUTting App Information on $APP_REGISTRY_URL"
+# function to generate post data
+generate_post_data() {
+cat <<EOF
+{
+  "id":"$APP_ID",
+  "name": "$APP_NAME",
+  "title": "$APP_TITLE",
+  "shortDescription": "$APP_SHORT_DESCRIPTION",
+  "description":"$APP_DESCRIPTION",
+  "category":"$APP_CATEGORY",
+  "appType":"$APP_TYPE",
+  "apiEntrypoint": "$APP_API_ENTRYPOINT",
+  "adminUrl": "$APP_ADMIN_URL",
+  "adminConfigUrl": "$APP_ADMIN_CONFIG_URL",
+  "adminDocUrl": "$APP_ADMIN_DOC_URL",
+  "adminLogUrl": "$APP_ADMIN_LOG_URL",
+  "adminStatusUrl": "$APP_ADMIN_STATUS_URL",
+  "userUrl": "$APP_USER_URL",
+  "userDocUrl": "$APP_USER_DOC_URL",
+  "userStatusUrl": "$APP_USER_STATUS_URL",
+  "devDocUrl": "$APP_DEV_DOC_URL",
+  "devSwaggerUrl": "$APP_DEV_SWAGGER_URL",
+  "iconUrl": "$APP_ICON_URL",
+  "status":"online"
+}
+EOF
+}
+
+echo $(generate_post_data)
 
 #Register Application
-curl -L -X PUT "$APP_REGISTRY_URL/id" -d value="$APP_ID"
-curl -L -X PUT "$APP_REGISTRY_URL/name" -d value="$APP_NAME"
-curl -L -X PUT "$APP_REGISTRY_URL/title" -d value="$APP_TITLE"
-curl -L -X PUT "$APP_REGISTRY_URL/shortDescription" -d value="$APP_SHORTDESCRIPTION"
-curl -L -X PUT "$APP_REGISTRY_URL/description" -d value="$APP_DESCRIPTION"
-curl -L -X PUT "$APP_REGISTRY_URL/category" -d value="$APP_CATEGORY"
-curl -L -X PUT "$APP_REGISTRY_URL/status" -d value="$APP_STATUS"
-curl -L -X PUT "$APP_REGISTRY_URL/apiEntrypoint" -d value="$APP_APIENTRYPOINT"
-curl -L -X PUT "$APP_REGISTRY_URL/apiSpecificationUrl" -d value="$APP_APISPECIFICATION"
-curl -L -X PUT "$APP_REGISTRY_URL/iconUrl" -d value="$APP_ICONURL"
-curl -L -X PUT "$APP_REGISTRY_URL/adminUrl" -d value="$APPHUB_ADMINURL"
-curl -L -X PUT "$APP_REGISTRY_URL/userUrl" -d value="$APP_USERURL"
-curl -L -X PUT "$APP_REGISTRY_URL/createdAt" -d value="$APP_CREATEDAT"
-curl -L -X PUT "$APP_REGISTRY_URL/updatedAt" -d value="$APP_UPDATEDAT"
-curl -L -X PUT "$APP_REGISTRY_URL/appType" -d value="$APP_TYPE"
+response=$(curl -X POST -k -i -f \
+                --write-out %{http_code} --silent --output /dev/null \
+                -H "Accept: application/json" \
+                -H "Content-Type: application/json" \
+                --data "$(generate_post_data)" \
+                "$APP_REGISTRY_ADDRESS/api/v1/apps")
+
+echo "response of POST /api/v1/apps: " $response
+
+if [ "$response" != 200 ]
+    then
+      echo '{"lifecycleStatus":"online"}'
+      echo "response of PUT /api/v1/apps/$APP_NAME: " \
+           $(curl -X PUT -k -i -f \
+                  --write-out %{http_code} --silent --output /dev/null \
+                  -H "Accept: application/json" \
+                  -H "Content-Type: application/json" \
+                  -d '{"lifecycleStatus":"online"}' \
+                  "$APP_REGISTRY_ADDRESS/api/v1/apps/$APP_NAME")
+fi
 
 # SIGTERM-handler
 # Unregister this application on ctr+c
 term_handler() {
   echo "[Sidecar] Shutting Down"
 
-  #Delete Entry
-  #curl -L -X PUT "http://$ETCD_IP:$ETCD_PORT/v2/keys/$APP_NAME?recursive=true" -XDELETE
-
   #Set Status Offline
-  curl -L -X PUT "$APP_REGISTRY_URL/status" -d value="Offline"
+  echo '{"lifecycleStatus":"offline"}'
+  echo "response of PUT /api/v1/apps/$APP_NAME: " \
+        $(curl -L -X PUT -k -i -f \
+               --write-out %{http_code} --silent --output /dev/null \
+               -H "Accept: application/json" \
+               -H "Content-Type: application/json" \
+               -d '{"lifecycleStatus":"offline"}' \
+               "$APP_REGISTRY_ADDRESS/api/v1/apps/$APP_NAME")
 
   exit 143; # 128 + 15 -- SIGTERM
 }
