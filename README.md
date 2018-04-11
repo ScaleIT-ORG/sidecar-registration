@@ -1,40 +1,56 @@
-Work in progress
+# Registration Sidecar
 
-example docker-compose for app rancher deployment:
+Add this sidecar to your launch configuration (eg. docker-compose) in order to register it to the ETCD App Registry.
 
-	examples/docker-compose.yml
+In the Rancher Catalog entry for your app, you need to have the following files. Add all environment variables to the 
 
-These are the values you should fill into the docker-compose for Rancher - works over the rancher questions mechanism (similar to .env in docker-compose):
+	|---de-kit-black-cylinder/
+	  |---catalogIcon-de-kit-black-cylinder.png
+	  |---config.yml
+	  \---0/
+	    |-----docker-compose.yml
+	    \-----rancher-compose.yml
 
-	# entries that are empty here are optional
-	ETCD_IP=10.28.230.25
-	ETCD_PORT=49501
-	
-	APP_ID=myID123
-	APP_NAME=App1
-	APP_TITLE=MyTitle
-	APP_SHORTDESCRIPTION=Your Description here
-	APP_DESCRIPTION=More Information
-	APP_CATEGORY=productivity
-	APP_STATUS=online
-	APP_API_ENTRYPOINT=https=//<ip>=<port>/api/v1
-	APP_ICON_URL=https://<ip>:<port>/user/icon.svg
-	
-	APP_ADMIN_URL=https://<ip>:<port>/admin
-	APP_ADMIN_CONFIG_URL=
-	APP_ADMIN_DOC_URL=
-	APP_ADMIN_LOG_URL=
-	APP_ADMIN_STATUS_URL=
-	
-	APP_USER_URL=https://<ip>:<port>/user
-	APP_USER_DOC_URL=
-	APP_USER_STATUS_URL=
-	APP_DEV_DOC_URL=
-	APP_DEV_SWAGGER_URL=
-	APP_USER_URL=
-	
-	APP_UPDATEDAT=2018-03-30T12:32:16.581Z
-	APP_TYPE=domainApp
+This is how your docker-compose.yml for the catalog should look like:
+
+	version: '2'
+	services:
+	    de-kit-black-cylinder:
+	        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-black-cylinder:1.0
+	        ports:
+	          - "51102:80"
+        
+	    de-kit-black-cylinder-sidecar-registration:
+	    	image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
+	    	environment:
+	          - ETCD_IP=10.0.0.200
+	          - ETCD_PORT=49501
+	          - APP_PORT=51102
+	          - APP_ID=de-kit-black-cylinder_1
+	          - APP_NAME=de-kit-black-cylinder
+	          - APP_TITLE=Black Cylinder Nutzen
+	          - APP_SHORTDESCRIPTION=Black Cylinder Nutzen Digital Twin
+	          - APP_DESCRIPTION=Proof of Concept Black Cylinder Nutzen Digital Twin
+	          - APP_CATEGORY=domainApp
+	          - APP_STATUS=online
+	          - APP_ICON_URL=http://10.0.0.200:51102/assets/icon/appHubIcon-de-kit-black-cylinder.png
+	          - APP_USER_URL=http://10.0.0.200:51102/#/user
+	          - APP_USER_DOC_URL=
+	          - APP_USER_STATUS_URL=
+	          - APP_DEV_DOC_URL=
+	          - APP_DEV_SWAGGER_URL=
+	          - APP_ADMIN_URL=http://10.0.0.200:51102/#/admin
+	          - APP_ADMIN_CONFIG_URL=
+	          - APP_ADMIN_DOC_URL=
+	          - APP_ADMIN_LOG_URL=
+	          - APP_ADMIN_STATUS_URL=
+	          - APP_API_ENTRYPOINT=
+	          - APP_UPDATEDAT=2018-04-11T12:32:16.581Z
+	          - APP_TYPE=domainApp
+
+If this docker-compose is launched in Rancher as a stack it will pull the images and start the containers. The registration sidecar will register the values of the env variables above in the registry.
+
+You could query the registry via the ETCD Browser usually located at `<server-address>:45902`
 
 # sidecar-script
 1. Clone this repository to your main application
