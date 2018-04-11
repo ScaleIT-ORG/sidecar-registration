@@ -1,7 +1,7 @@
 version: '2'
 services: 
-    de-kit-black-cylinder-sidecar-registration:
-        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-black-cylinder-sidecar-registration:1.0
+    de-kit-sidecar-registration:
+        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
         build: .
         env_file:
          - config.env

@@ -31,6 +31,8 @@ echo APP_TYPE: $APP_TYPE
 echo ETCD IP: $ETCD_IP
 echo ETCD PORT: $ETCD_IP
 
+echo "Check if etcd is up and running ..."
+
 #check if etcd is up and running
 STR='"health": "false"'
 STR=$(curl -sb -H "Accept: application/json" "http://$ETCD_IP:$ETCD_PORT/health")
