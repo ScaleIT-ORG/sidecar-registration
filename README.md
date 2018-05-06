@@ -1,7 +1,7 @@
 # sidecar-script
 1. Clone this repository to your main application
 
-2. Configure config.env
+2. Configure config.env in the cloned repository. To configure config.env appropriately, refer to configurations of the etcd, your application has to be registered in.
 
 3. How to use:
 	1. Run "docker-compose up" to start the script as standalone 
@@ -13,7 +13,10 @@
     env_file:
       - ./sidecar-registration/config.env
 ``` 
-to your docker-compose file
+to your docker-compose file. 
+
+4. How to check: in order to check whether the sidecar is configured correctly, open your etcd browser (http://$ETCD_IP:$ETCD_PORT) and find your app in the etcd filesystem. See the screenshot-example below. Furthmore you can also refer to the section "explanation". 
+![Correctness check](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/check.png)
 
 # architecture
 
