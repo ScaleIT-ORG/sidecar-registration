@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "Sidecar running"
 echo "pid is $$"
