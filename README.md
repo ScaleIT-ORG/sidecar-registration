@@ -1,12 +1,15 @@
-# sidecar-script
+# ScaleIT Registration Sidecar
+
+## Standalone Usage
+
 1. Clone this repository to your main application
 
 2. Configure config.env in the cloned repository. To configure config.env appropriately, refer to configurations of the etcd, your application has to be registered in.
 
 3. How to use:
-	1. Run "docker-compose up" to start the script as standalone 
-	2. Or add
-		
+    1. Run "docker-compose up" to start the script as standalone 
+    2. Or add
+        
 ```
   sidecarregistration:
     build: ./sidecar-registration/
@@ -15,7 +18,45 @@
 ``` 
 to your docker-compose file. 
 
-4. How to check: in order to check whether the sidecar is configured correctly, open your etcd browser (http://$ETCD_IP:$ETCD_PORT) and find your app in the etcd filesystem. See the screenshot-example below. Furthmore you can also refer to the section "explanation". 
+## Platform Integrated
+
+If you have already pushed the Registration Sidecar Image to your docker registry, you can just use it in the docker-compose.yml of your App:
+
+```
+    de-kit-production-map:
+        image: myAppImage
+        ...
+        
+    de-kit-production-map-sidecar-registration:
+        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
+        environment:
+          - ETCD_IP=10.0.200
+          - ETCD_PORT=49501
+          - APP_PORT=51100
+          - APP_ID=de-kit-production-map-app_1
+          - APP_NAME=de-kit-production-map-app
+          - APP_TITLE=Production Map App
+          - APP_SHORTDESCRIPTION=Digital Production Map
+          - APP_DESCRIPTION=The Digital Production Map helps give an overview of the physical and digital production landscape
+          - APP_CATEGORY=domainApp
+          - APP_STATUS=online
+          - APP_ICON_URL=http://10.0.200:51100/assets/icon/favicon.ico
+          - APP_USER_URL=http://10.0.200:51100/#/pages/user
+          - APP_USER_DOC_URL=
+          - APP_USER_STATUS_URL=
+          - APP_DEV_DOC_URL=
+          - APP_DEV_SWAGGER_URL=
+          - APP_ADMIN_URL=http://10.0.200:${APP_MAIN_PORT}/#/admin
+          - APP_ADMIN_CONFIG_URL=
+          - APP_ADMIN_DOC_URL=
+          - APP_ADMIN_LOG_URL=
+          - APP_ADMIN_STATUS_URL=
+          - APP_API_ENTRYPOINT=
+          - APP_UPDATEDAT=2018-09-19T13:32:16.581Z
+          - APP_TYPE=domainApp
+```
+
+Checking the sidecar: in order to check whether the sidecar is configured correctly, open your etcd browser (http://$ETCD_IP:$ETCD_PORT) and find your app in the etcd filesystem. See the screenshot-example below. Furthmore you can also refer to the section "explanation". 
 ![Correctness check](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/check.png)
 
 # architecture
