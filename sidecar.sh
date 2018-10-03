@@ -23,7 +23,7 @@ echo APP_USER_STATUS_URL: $APP_USER_STATUS_URL
 echo APP_DEV_DOC_URL: $APP_DEV_DOC_URL
 echo APP_DEV_SWAGGER_URL: $APP_DEV_SWAGGER_URL
 echo APP_USER_URL: $APP_USER_URL
-echo APP_UPDATEDAT: $APP_UPDATEDAT
+echo APP_UPDATED_AT: $APP_UPDATED_AT
 echo APP_TYPE: $APP_TYPE
 
 # ETCD_PORT=$ETCD_PORT
@@ -72,7 +72,7 @@ curl -L -X PUT "$APP_REGISTRY_URL/userStatusUrl" -d value="$APP_USER_STATUS_URL"
 curl -L -X PUT "$APP_REGISTRY_URL/devDocUrl" -d value="$APP_DEV_DOC_URL"
 curl -L -X PUT "$APP_REGISTRY_URL/devSwaggerUrl" -d value="$APP_DEV_SWAGGER_URL"
 curl -L -X PUT "$APP_REGISTRY_URL/userUrl" -d value="$APP_USER_URL"
-curl -L -X PUT "$APP_REGISTRY_URL/updatedAt" -d value="$APP_UPDATEDAT"
+curl -L -X PUT "$APP_REGISTRY_URL/updatedAt" -d value="$APP_UPDATED_AT"
 curl -L -X PUT "$APP_REGISTRY_URL/appType" -d value="$APP_TYPE"
 
 # SIGTERM-handler
