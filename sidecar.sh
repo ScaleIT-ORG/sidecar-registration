@@ -86,6 +86,8 @@ term_handler() {
   #Set Status Offline
   curl -L -X PUT "$APP_REGISTRY_URL/status" -d value="Offline"
 
+  echo"[Sidecar] Deregistering App $APP_ID"
+
   exit 143; # 128 + 15 -- SIGTERM
 }
 
