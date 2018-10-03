@@ -2,5 +2,6 @@ version: '2'
 services: 
     sidecar-registration:
         build: .
+        image: de-kit-sidecar-registration:1.0
         env_file:
          - config.env
