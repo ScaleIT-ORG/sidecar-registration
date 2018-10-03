@@ -1,0 +1,49 @@
+version: '2'
+services:
+  com-mycompany-myapp-example:
+    image: ${DOCKER_REGISTRY_ADDRESS}/com-iao-app-dpo:v1.0.0
+    ports:
+      - "${EXPOSED_SERVER_PORT}:3001"
+    environment:
+      APP_NAME: dpo
+      SERVER_PROTOCOL: https
+      HOST_IP: ${HOST_IP}
+      SERVER_PORT: 3001
+      EXPOSED_SERVER_PORT: EXPOSED_SERVER_PORT
+      SERVER_MODE: production
+      SSL_CERT: /run/secrets/sslcert
+      SSL_KEY: /run/secrets/sslkey
+      JWT_SECRET: /run/secrets/jwtSecret
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MONGODB_IP: ${MONGODB_IP}
+      MONGODB_PORT: ${MONGODB_PORT}
+      MONGODB_DB: sip
+      APP_REGISTRY_ADDRESS: ${APP_REGISTRY_ADDRESS}
+      ERP_PROXY_IP: ${ERP_PROXY_IP}
+    restart: always
+
+# Edit me 
+  com-mycompany-myapp-registration-sidecar:
+    image: ${APP_REGISTRY_ADDRESS}/scaleit-app-pool/de-kit-sidecar-app-registration:1.0
+    environment:
+      APP_REGISTRY_ADDRESS: ${APP_REGISTRY_ADDRESS}
+      APP_ID: com.mycompany.myapp/myapp_1
+      APP_NAME: com.mycompany.myapp
+      APP_TITLE: "Example App"
+      APP_SHORT_DESCRIPTION: "Does some magic"
+      APP_DESCRIPTION: "Magic doing example app"
+      APP_CATEGORY: "examples"
+      APP_TYPE: "domainApp"
+      APP_API_ENTRYPOINT: "https://${HOST_IP}:${EXPOSED_SERVER_PORT}/api/v1"
+      APP_ADMIN_URL: ""
+      APP_ADMIN_CONFIG_URL: ""
+      APP_ADMIN_DOC_URL: ""
+      APP_ADMIN_LOG_URL: ""
+      APP_ADMIN_STATUS_URL: ""
+      APP_USER_URL: "https://${HOST_IP}:${EXPOSED_SERVER_PORT}/client"
+      APP_USER_DOC_URL: ""
+      APP_USER_STATUS_URL: ""
+      APP_DEV_DOC_URL: ""
+      APP_DEV_SWAGGER_URL: "https://${HOST_IP}:${EXPOSED_SERVER_PORT}/docs"
+      APP_ICON_URL: "https://${HOST_IP}:${EXPOSED_SERVER_PORT}/api/resources/dpo.svg"
