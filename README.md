@@ -1,5 +1,59 @@
 # ScaleIT Registration Sidecar
 
+## Platform Integrated
+
+If you have already pushed the Registration Sidecar Image to your docker registry, add this sidecar to your launch configuration (eg. docker-compose) in order to register it to the ETCD App Registry.
+
+In the Rancher Catalog entry for your app, you need to have the following files. Add all environment variables to the 
+
+	|---de-kit-black-cylinder/
+	  |---catalogIcon-de-kit-black-cylinder.png
+	  |---config.yml
+	  \---0/
+	    |-----docker-compose.yml
+	    \-----rancher-compose.yml
+
+This is how your docker-compose.yml for the catalog should look like:
+
+	version: '2'
+	services:
+	    de-kit-black-cylinder:
+	        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-black-cylinder:1.0
+	        ports:
+	          - "51102:80"
+        
+	    de-kit-black-cylinder-sidecar-registration:
+	    	image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
+	    	environment:
+	          - ETCD_IP=10.0.0.200
+	          - ETCD_PORT=49501
+	          - APP_PORT=51102
+	          - APP_ID=de-kit-black-cylinder_1
+	          - APP_NAME=de-kit-black-cylinder
+	          - APP_TITLE=Black Cylinder Nutzen
+	          - APP_SHORTDESCRIPTION=Black Cylinder Nutzen Digital Twin
+	          - APP_DESCRIPTION=Proof of Concept Black Cylinder Nutzen Digital Twin
+	          - APP_CATEGORY=domainApp
+	          - APP_STATUS=online
+	          - APP_ICON_URL=http://10.0.0.200:51102/assets/icon/appHubIcon-de-kit-black-cylinder.png
+	          - APP_USER_URL=http://10.0.0.200:51102/#/user
+	          - APP_USER_DOC_URL=
+	          - APP_USER_STATUS_URL=
+	          - APP_DEV_DOC_URL=
+	          - APP_DEV_SWAGGER_URL=
+	          - APP_ADMIN_URL=http://10.0.0.200:51102/#/admin
+	          - APP_ADMIN_CONFIG_URL=
+	          - APP_ADMIN_DOC_URL=
+	          - APP_ADMIN_LOG_URL=
+	          - APP_ADMIN_STATUS_URL=
+	          - APP_API_ENTRYPOINT=
+	          - APP_UPDATEDAT=2018-04-11T12:32:16.581Z
+	          - APP_TYPE=domainApp
+
+If this docker-compose is launched in Rancher as a stack it will pull the images and start the containers. The registration sidecar will register the values of the env variables above in the registry.
+
+You could query the registry via the ETCD Browser usually located at `<server-address>:45902`
+
 ## Standalone Usage
 
 1. Clone this repository to your main application
@@ -18,43 +72,7 @@
 ``` 
 to your docker-compose file. 
 
-## Platform Integrated
-
-If you have already pushed the Registration Sidecar Image to your docker registry, you can just use it in the docker-compose.yml of your App:
-
-```
-    de-kit-production-map:
-        image: myAppImage
-        ...
-        
-    de-kit-production-map-sidecar-registration:
-        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
-        environment:
-          - ETCD_IP=10.0.200
-          - ETCD_PORT=49501
-          - APP_PORT=51100
-          - APP_ID=de-kit-production-map-app_1
-          - APP_NAME=de-kit-production-map-app
-          - APP_TITLE=Production Map App
-          - APP_SHORTDESCRIPTION=Digital Production Map
-          - APP_DESCRIPTION=The Digital Production Map helps give an overview of the physical and digital production landscape
-          - APP_CATEGORY=domainApp
-          - APP_STATUS=online
-          - APP_ICON_URL=http://10.0.200:51100/assets/icon/favicon.ico
-          - APP_USER_URL=http://10.0.200:51100/#/pages/user
-          - APP_USER_DOC_URL=
-          - APP_USER_STATUS_URL=
-          - APP_DEV_DOC_URL=
-          - APP_DEV_SWAGGER_URL=
-          - APP_ADMIN_URL=http://10.0.200:${APP_MAIN_PORT}/#/admin
-          - APP_ADMIN_CONFIG_URL=
-          - APP_ADMIN_DOC_URL=
-          - APP_ADMIN_LOG_URL=
-          - APP_ADMIN_STATUS_URL=
-          - APP_API_ENTRYPOINT=
-          - APP_UPDATEDAT=2018-09-19T13:32:16.581Z
-          - APP_TYPE=domainApp
-```
+## Checking Proper Configuration
 
 Checking the sidecar: in order to check whether the sidecar is configured correctly, open your etcd browser (http://$ETCD_IP:$ETCD_PORT) and find your app in the etcd filesystem. See the screenshot-example below. Furthmore you can also refer to the section "explanation". 
 ![Correctness check](https://github.com/ScaleIT-ORG/spsc-app-registration/blob/master/Resources/Documentation/check.png)

@@ -1,6 +1,7 @@
 version: '2'
 services: 
-    sidecar-registration:
+    de-kit-sidecar-registration:
+        image: scaleit-app-pool.ondics.de:5000/scaleit-app-pool/de-kit-sidecar-registration:1.0
         build: .
         image: de-kit-sidecar-registration:1.0
         env_file:
